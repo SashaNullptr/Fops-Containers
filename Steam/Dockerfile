@@ -24,11 +24,6 @@ WORKDIR /var/lib/steam
 # Bootstraps the Steam client
 RUN steamcmd +login anonymous validate +quit
 
-# persist games
-VOLUME /home/steam/.steam/
-# persist Steam configs/updates
-VOLUME /opt/steam/.local/share/Steam
-
 # Updates on launch
 ONBUILD RUN steamcmd +login anonymous validate +quit
 
