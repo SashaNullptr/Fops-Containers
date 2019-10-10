@@ -39,15 +39,14 @@ Notably we need to share the host's DISPLAY and `/dev/dri`
 
 ```shell
 docker run \
-  --runtime nvidia \
-  --device /dev/dri \
-  --user pcsx2 \
-  --volume "/tmp/.X11-unix:/tmp/.X11-unix:rw" \
-  --volume "$PS2_FIRMWARE_DIR:/home/pcsx2/.config/PCSX2/bios" \
-  --env DISPLAY=$DISPLAY \
-  --restart=on-failure \
+  -it \
   --privileged \
-  steam:latest
+  --runtime=nvidia \
+  --device=/dev/dri \
+  --user=pcsx2 \
+  --volume /tmp/.X11-unix:/tmp/.X11-unix:rw \
+  --env DISPLAY=$DISPLAY \
+  sashanullptr/pcsx2:latest
 ```
 
 ## Use in Docker-Compose
