@@ -14,6 +14,8 @@ services:
     user: steam
     volumes:
       - '/tmp/.X11-unix:/tmp/.X11-unix:rw'
+      - ./steam_games:/home/steam/.steam/
+      - ./steam_data:/opt/steam/.local/share/Steam
     devices:
       - /dev/dri
     healthcheck:
