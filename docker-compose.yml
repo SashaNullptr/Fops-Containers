@@ -1,0 +1,43 @@
+version: '2.3'
+
+services:
+
+  steam:
+    restart: on-failure
+    image: 'steam:latest'
+    build:
+      context: .
+      dockerfile: ./Steam/Dockerfile
+    runtime: nvidia
+    environment:
+      - DISPLAY=$DISPLAY
+    user: steam
+    volumes:
+      - '/tmp/.X11-unix:/tmp/.X11-unix:rw'
+    devices:
+      - /dev/dri
+    healthcheck:
+        test: steamcmd +login anonymous +quit || exit 1
+        interval: 10s
+        timeout: 2s
+        retries: 5
+
+  pcsx2:
+    restart: on-failure
+    image: 'pcsx2:latest'
+    build:
+      context: .
+      dockerfile: ./PCSX2/Dockerfile
+    runtime: nvidia
+    environment:
+      - DISPLAY=$DISPLAY
+    user: pcsx2
+    volumes:
+      - '/tmp/.X11-unix:/tmp/.X11-unix:rw'
+      - '${PS2_FIRMWARE_DIR}:/home/pcsx2/.config/PCSX2/bios'
+      - '${PSCX2_INI_DIR}:/home/pcsx2/.config/PCSX2/inis'
+      - '${PS2_MEMCARDS_DIR}:/home/pcsx2/.config/PCSX2/memcards'
+    devices:
+      - /dev/dri
+    env_file: example.env
+    privileged: true
